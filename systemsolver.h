@@ -21,6 +21,7 @@ private:
     double* A; // AX = B
     double* X;
     double* B;
+    double* AX;
     int n;
 };
 
