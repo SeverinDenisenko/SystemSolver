@@ -6,6 +6,7 @@
 #define NUMERICAL_TASK_3_SYSTEMSOLVER_H
 
 #include <iostream>
+#include <vector>
 
 class SystemSolver{
 public:
@@ -14,14 +15,13 @@ public:
     void ReadData(FILE *DATA);
     void WriteData(FILE *DATA);
     void SolveGauss();
-    void SolveIordan();
+    void SolveJordan();
     void SolveLeadElement();
     double GetResidual();
 private:
-    double* A; // AX = B
-    double* X;
-    double* B;
-    double* AX;
+    std::vector< std::vector<double> > A;
+    std::vector<double> X;
+    std::vector<double> AX;
     int n;
 };
 

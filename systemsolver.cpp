@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <cmath>
+#include <vector>
 #include "systemsolver.h"
 
 SystemSolver::SystemSolver() {}
@@ -17,16 +18,20 @@ void SystemSolver::ReadData(FILE *DATA) {
 
     fscanf(DATA, "%d", &n);
 
-    A = new double[n*n];
-    B = new double[n];
-    X = new double[n];
-
-    for (int i = 0; i < n * n; ++i) {
-        fscanf(DATA, "%lf", &A[i]);
+    A.resize(n);
+    for(int i = 0; i < n; ++i)
+    {
+        A[i].resize(n + 1);
     }
 
     for (int i = 0; i < n; ++i) {
-        fscanf(DATA, "%lf", &B[i]);
+        for (int j = 0; j < n; ++j) {
+            fscanf(DATA, "%lf", &A[i][j]);
+        }
+    }
+
+    for (int i = 0; i < n; ++i) {
+        fscanf(DATA, "%lf", &A[i][n]);
     }
 }
 
@@ -39,10 +44,47 @@ void SystemSolver::WriteData(FILE *RESULT) {
 }
 
 void SystemSolver::SolveGauss() {
+    X.resize(n);
 
+    for(int j = 0; j < n; j++)
+    {
+        if (A[j][j] == 0){
+            printf("Element (%d, %d) is 0.\n", j + 1, j + 1);
+            exit(1);
+        }
+
+        if (abs(A[j][j]) < 10e-5L){
+            printf("Element (%d, %d) is too close to 0.\n", j + 1, j + 1);
+        }
+
+        for(int i = 0; i < n; i++)
+        {
+            if(i > j)
+            {
+                double div = A[i][j] / A[j][j];
+
+                for(int k = 0; k < n; k++)
+                {
+                    A[i][k] = A[i][k] - div * A[j][k];
+                }
+            }
+        }
+    }
+
+    X[n]=A[n - 1][n] / A[n - 1][n - 1];
+
+    for(int i = n - 1; i >= 0; i--)
+    {
+        double sum = 0;
+        for(int j = i; j < n; j++)
+        {
+            sum = sum + A[i][j] * X[j];
+        }
+        X[i] = (A[i][n] - sum) / A[i][i];
+    }
 }
 
-void SystemSolver::SolveIordan() {
+void SystemSolver::SolveJordan() {
 
 }
 
@@ -53,14 +95,16 @@ void SystemSolver::SolveLeadElement() {
 double SystemSolver::GetResidual() {
     double residual = 0;
 
-    AX = new double[n];
+    AX.resize(n);
 
     for (int i = 0; i < n; ++i) {
-        AX[i] = 0;
-
         for (int j = 0; j < n; ++j) {
-            AX[i] += X[j] * A[j];
+            AX[i] += X[j] * A[i][j];
         }
+    }
+
+    for (int i = 0; i < n; ++i) {
+        AX[i] -= A[i][n];
     }
 
     for (int i = 0; i < n; ++i) {

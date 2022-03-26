@@ -15,7 +15,7 @@ int main(int argc, char *argv[]){
     // Reading commandline arguments
 
     if (argc != 2){
-        printf("Usage: \n\t-g for Gauss method. \n\t-i for Iordan scheme. \n\t-l for lead element method \n");
+        printf("Usage: \n\t-g for Gauss method. \n\t-j for Iordan scheme. \n\t-l for lead element method \n");
         exit(1);
     }
 
@@ -23,21 +23,21 @@ int main(int argc, char *argv[]){
     system.ReadData(DATA);
 
     int opt;
-    while((opt = getopt(argc, argv, "gil")) != -1)
+    while((opt = getopt(argc, argv, "gjl")) != -1)
     {
         switch(opt)
         {
             case 'g':
                 system.SolveGauss();
                 break;
-            case 'i':
-                system.SolveIordan();
+            case 'j':
+                system.SolveJordan();
                 break;
             case 'l':
                 system.SolveLeadElement();
                 break;
             default:
-                std::cout << "Usage: \n\t-g for Gauss method. \n\t-i for Iordan scheme. \n\t-l for lead element method.\n";
+                std::cout << "Usage: \n\t-g for Gauss method. \n\t-j for Jordan scheme. \n\t-l for lead element method.\n";
                 exit(1);
         }
         break;
