@@ -85,7 +85,36 @@ void SystemSolver::SolveGauss() {
 }
 
 void SystemSolver::SolveJordan() {
+    X.resize(n);
 
+    for(int j = 0; j < n; j++)
+    {
+        if (A[j][j] == 0){
+            printf("Element (%d, %d) is 0.\n", j + 1, j + 1);
+            exit(1);
+        }
+
+        if (abs(A[j][j]) < 10e-5L){
+            printf("Element (%d, %d) is too close to 0.\n", j + 1, j + 1);
+        }
+
+        for(int i = 0; i < n; i++)
+        {
+            if(i != j)
+            {
+                double div = A[i][j] / A[j][j];
+                for(int k = 0; k < n + 1; k++)
+                {
+                    A[i][k] = A[i][k] - div * A[j][k];
+                }
+            }
+        }
+    }
+
+    for(int i = 0; i < n; i++)
+    {
+        X[i] = A[i][n] / A[i][i];
+    }
 }
 
 void SystemSolver::SolveLeadElement() {
