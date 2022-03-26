@@ -117,7 +117,37 @@ void SystemSolver::SolveJordan() {
     }
 }
 
+//TODO
 void SystemSolver::SolveLeadElement() {
+    X.resize(n);
+
+    for(int j = 0; j < n; j++)
+    {
+        for(int i = 0; i < n; i++)
+        {
+            if(i > j)
+            {
+                double div = A[i][j] / A[j][j];
+
+                for(int k = 0; k < n; k++)
+                {
+                    A[i][k] = A[i][k] - div * A[j][k];
+                }
+            }
+        }
+    }
+
+    X[n]=A[n - 1][n] / A[n - 1][n - 1];
+
+    for(int i = n - 1; i >= 0; i--)
+    {
+        double sum = 0;
+        for(int j = i; j < n; j++)
+        {
+            sum = sum + A[i][j] * X[j];
+        }
+        X[i] = (A[i][n] - sum) / A[i][i];
+    }
 
 }
 

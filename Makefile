@@ -1,7 +1,7 @@
 all: run
 
 run: build $(wildcard data.dat)
-	./build -j
+	./build -l
 
 build: $(wildcard *hpp *cpp)
 	g++ *.cpp -o build
