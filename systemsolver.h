@@ -6,7 +6,6 @@
 #define NUMERICAL_TASK_3_SYSTEMSOLVER_H
 
 #include <iostream>
-#include <vector>
 
 class SystemSolver{
 public:
@@ -19,9 +18,9 @@ public:
     void SolveLeadElement();
     double GetResidual();
 private:
-    std::vector< std::vector<double> > A;
-    std::vector<double> X;
-    std::vector<double> AX;
+    double** A;
+    double* X;
+    double* AX;
     int n;
 };
 

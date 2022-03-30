@@ -4,7 +4,6 @@
 
 #include <iostream>
 #include <cmath>
-#include <vector>
 #include "systemsolver.h"
 
 SystemSolver::SystemSolver() {}
@@ -18,11 +17,11 @@ void SystemSolver::ReadData(FILE *DATA) {
 
     fscanf(DATA, "%d", &n);
 
-    A.resize(n);
-    for(int i = 0; i < n; ++i)
-    {
-        A[i].resize(n + 1);
+    A = (double**)malloc(sizeof(double*) * n);
+    for (int i = 0; i < n; ++i) {
+        A[i] = (double*)malloc(sizeof(double) * (n + 1));
     }
+
 
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < n; ++j) {
@@ -44,7 +43,7 @@ void SystemSolver::WriteData(FILE *RESULT) {
 }
 
 void SystemSolver::SolveGauss() {
-    X.resize(n);
+    X = (double*)malloc(sizeof(double) * n);
 
     for(int j = 0; j < n; j++)
     {
@@ -85,7 +84,7 @@ void SystemSolver::SolveGauss() {
 }
 
 void SystemSolver::SolveJordan() {
-    X.resize(n);
+    X = (double*)malloc(sizeof(double) * n);
 
     for(int j = 0; j < n; j++)
     {
@@ -119,7 +118,7 @@ void SystemSolver::SolveJordan() {
 
 //TODO
 void SystemSolver::SolveLeadElement() {
-    X.resize(n);
+    X = (double*)malloc(sizeof(double) * n);
 
     for(int j = 0; j < n; j++)
     {
@@ -154,7 +153,7 @@ void SystemSolver::SolveLeadElement() {
 double SystemSolver::GetResidual() {
     double residual = 0;
 
-    AX.resize(n);
+    AX = (double*)malloc(sizeof(double) * n);
 
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < n; ++j) {
