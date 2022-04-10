@@ -7,7 +7,8 @@
 
 #include <iostream>
 
-class SystemSolver{
+class SystemSolver
+{
 public:
     SystemSolver();
     ~SystemSolver();
@@ -17,11 +18,12 @@ public:
     void SolveJordan();
     void SolveLeadElement();
     double GetResidual();
+
 private:
-    double** A;
-    double* X;
-    double* AX;
+    double **A;
+    double *X;
+    double *AX;
     int n;
 };
 
-#endif //NUMERICAL_TASK_3_SYSTEMSOLVER_H
+#endif // NUMERICAL_TASK_3_SYSTEMSOLVER_H

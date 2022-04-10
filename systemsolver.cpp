@@ -139,33 +139,99 @@ void SystemSolver::SolveLeadElement()
 {
     X = (double *)malloc(sizeof(double) * n);
 
+    int *x_order = (int *) malloc(sizeof(int) * n);
+
+    for (int i = 0; i < n; i++)
+    {
+        x_order[i] = i;
+    }
+
     for (int j = 0; j < n; j++)
     {
+        // Serch for biggest element and change order //
+
+        int max_i = 0;
+        int max_j = 0;
+        double max = 0;
+
+        for (int z = j; z < n; z++)
+        {
+            for (int t = z; t < n; t++)
+            {
+                if (abs(A[z][t]) > max)
+                {
+                    max = abs(A[z][t]);
+                    max_i = z;
+                    max_j = t;
+                }
+            }
+        }
+        
         for (int i = 0; i < n; i++)
         {
-            if (i > j)
-            {
-                double div = A[i][j] / A[j][j];
+            double tmp = A[i][max_j];
+            A[i][max_j] = A[i][j];
+            A[i][j] = tmp;
+        }
+        
+        double* tmp1 = A[max_i];
+        A[max_i] = A[j];
+        A[j] = tmp1;
 
-                for (int k = 0; k < n; k++)
-                {
-                    A[i][k] = A[i][k] - div * A[j][k];
-                }
+        //for (int i = j; i < n + 1; i++)
+        //{
+        //    double tmp = A[max_i][i];
+        //    A[max_i][i] = A[j][i];
+        //    A[j][i] = tmp;
+        //}
+
+        int tmp = x_order[j];
+        x_order[j] = x_order[max_j];
+        x_order[max_j] = tmp;
+
+        ////////////////////////////////////////////////
+
+        for (int i = j + 1; i < n; i++)
+        {
+            double div = A[i][j] / A[j][j];
+
+            for (int k = 0; k < n + 1; k++)
+            {
+                A[i][k] = A[i][k] - div * A[j][k];
             }
         }
     }
 
-    X[n] = A[n - 1][n] / A[n - 1][n - 1];
+    X[n - 1] = A[n - 1][n] / A[n - 1][n - 1];
 
-    for (int i = n - 1; i >= 0; i--)
+    for (int i = n - 2; i >= 0; i--)
     {
         double sum = 0;
-        for (int j = i; j < n; j++)
+        for (int j = i + 1; j < n; j++)
         {
             sum = sum + A[i][j] * X[j];
         }
         X[i] = (A[i][n] - sum) / A[i][i];
     }
+
+    // Restore the order of X //
+
+    for (int i = 0; i < n; i++)
+    {
+        int tmp = x_order[i];
+        for (int j = 0; j < n; j++)
+        {
+            if (tmp == x_order[j])
+            {
+                double tmp1 = X[tmp];
+                X[tmp] = X[x_order[j]];
+                X[x_order[j]] = tmp1;
+            }
+        }
+        
+    }
+    
+    ////////////////////////////
 }
 
 double SystemSolver::GetResidual()
