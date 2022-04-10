@@ -15,7 +15,7 @@ int main(int argc, char *argv[]){
     // Reading commandline arguments
 
     if (argc != 2){
-        printf("Usage: \n\t-g for Gauss method. \n\t-j for Iordan scheme. \n\t-l for pivot element method.\n");
+        printf("Usage: \n\t-g for Gauss method. \n\t-j for Jordan scheme. \n\t-l for pivot element method.\n");
         exit(1);
     }
 
