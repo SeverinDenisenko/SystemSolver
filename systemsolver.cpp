@@ -173,9 +173,7 @@ void SystemSolver::SolveLeadElement()
             A[i][j] = tmp;
         }
         
-        double* tmp1 = A[max_i];
-        A[max_i] = A[j];
-        A[j] = tmp1;
+        std::swap(A[max_i], A[j]);
 
         int tmp = x_order[j];
         x_order[j] = x_order[max_j];
@@ -208,11 +206,17 @@ void SystemSolver::SolveLeadElement()
 
     // Restore the order of X //
 
-    for (int i = 0; i < n; i++)
-    {
-        double tmp = X[i];
-        X[i] = X[x_order[i]];
-        X[x_order[i]] = tmp;
+    for (int i = 0; i < n; i++) {
+        int next = i;
+ 
+        while (x_order[next] >= 0) {
+ 
+            std::swap(X[i], X[x_order[next]]);
+            int temp = x_order[next];
+ 
+            x_order[next] -= n;
+            next = temp;
+        }
     }
     
     ////////////////////////////
