@@ -172,7 +172,7 @@ void SystemSolver::SolveLeadElement()
 
         for (int z = j; z < n; z++)
         {
-            for (int t = z; t < n; t++)
+            for (int t = j; t < n; t++)
             {
                 if (abs(A[z][t]) > max)
                 {
