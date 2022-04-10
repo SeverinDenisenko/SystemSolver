@@ -134,7 +134,6 @@ void SystemSolver::SolveJordan()
     }
 }
 
-// TODO
 void SystemSolver::SolveLeadElement()
 {
     X = (double *)malloc(sizeof(double) * n);

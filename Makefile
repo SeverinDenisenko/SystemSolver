@@ -1,7 +1,9 @@
 all: run
 
 run: build $(wildcard data.dat)
-	./build -l
+	time ./build -g
+	time ./build -j
+	time ./build -l
 
 build: $(wildcard *h *cpp)
 	g++ *.cpp -o build
