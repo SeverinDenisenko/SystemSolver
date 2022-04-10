@@ -21,6 +21,7 @@ public:
 
 private:
     double **A;
+    double **A_duplicate;
     double *X;
     double *AX;
     int n;

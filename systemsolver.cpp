@@ -45,6 +45,23 @@ void SystemSolver::ReadData(FILE *DATA)
     {
         fscanf(DATA, "%lf", &A[i][n]);
     }
+
+    // Duplicate matrix for use in SystemSolver::GetResidual()
+
+    A_duplicate = (double **)malloc(sizeof(double *) * n);
+    for (int i = 0; i < n; ++i)
+    {
+        A_duplicate[i] = (double *)malloc(sizeof(double) * (n + 1));
+    }
+
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n + 1; j++)
+        {
+            A_duplicate[i][j] = A[i][j];
+        }
+    }
+    
 }
 
 void SystemSolver::WriteData(FILE *RESULT)
@@ -168,16 +185,10 @@ void SystemSolver::SolveLeadElement()
         
         for (int i = 0; i < n; i++)
         {
-            double tmp = A[i][max_j];
-            A[i][max_j] = A[i][j];
-            A[i][j] = tmp;
+            std::swap(A[i][max_j], A[i][j]);
         }
-        
         std::swap(A[max_i], A[j]);
-
-        int tmp = x_order[j];
-        x_order[j] = x_order[max_j];
-        x_order[max_j] = tmp;
+        std::swap(x_order[j], x_order[max_j]);
 
         ////////////////////////////////////////////////
 
@@ -232,13 +243,13 @@ double SystemSolver::GetResidual()
     {
         for (int j = 0; j < n; ++j)
         {
-            AX[i] += X[j] * A[i][j];
+            AX[i] += X[j] * A_duplicate[i][j];
         }
     }
 
     for (int i = 0; i < n; ++i)
     {
-        AX[i] -= A[i][n];
+        AX[i] -= A_duplicate[i][n];
     }
 
     for (int i = 0; i < n; ++i)
