@@ -177,13 +177,6 @@ void SystemSolver::SolveLeadElement()
         A[max_i] = A[j];
         A[j] = tmp1;
 
-        //for (int i = j; i < n + 1; i++)
-        //{
-        //    double tmp = A[max_i][i];
-        //    A[max_i][i] = A[j][i];
-        //    A[j][i] = tmp;
-        //}
-
         int tmp = x_order[j];
         x_order[j] = x_order[max_j];
         x_order[max_j] = tmp;
@@ -217,17 +210,9 @@ void SystemSolver::SolveLeadElement()
 
     for (int i = 0; i < n; i++)
     {
-        int tmp = x_order[i];
-        for (int j = 0; j < n; j++)
-        {
-            if (tmp == x_order[j])
-            {
-                double tmp1 = X[tmp];
-                X[tmp] = X[x_order[j]];
-                X[x_order[j]] = tmp1;
-            }
-        }
-        
+        double tmp = X[i];
+        X[i] = X[x_order[i]];
+        X[x_order[i]] = tmp;
     }
     
     ////////////////////////////
