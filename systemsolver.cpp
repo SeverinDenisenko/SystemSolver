@@ -174,7 +174,7 @@ void SystemSolver::SolveLeadElement()
         {
             for (int t = j; t < n; t++)
             {
-                if (abs(A[z][t]) > max)
+                if (fabs(A[z][t]) > max)
                 {
                     max = abs(A[z][t]);
                     max_i = z;
@@ -183,12 +183,28 @@ void SystemSolver::SolveLeadElement()
             }
         }
         
+        //for (int i = 0; i < n; i++)
+        //{
+        //    std::swap(A[i][max_j], A[i][j]);
+        //}
+        //std::swap(A[max_i], A[j]);
+        //std::swap(x_order[j], x_order[max_j]);
+
         for (int i = 0; i < n; i++)
         {
-            std::swap(A[i][max_j], A[i][j]);
+            double tmp = A[i][max_j];
+            A[i][max_j] = A[i][j];
+            A[i][j] = tmp;
         }
-        std::swap(A[max_i], A[j]);
-        std::swap(x_order[j], x_order[max_j]);
+
+        double *tmp = A[j];
+        A[j] = A[max_i];
+        A[max_i] = tmp;
+
+        int tmp1 = x_order[j];
+        x_order[j] = x_order[max_j];
+        x_order[max_j] = tmp1;
+        
 
         ////////////////////////////////////////////////
 
@@ -222,7 +238,11 @@ void SystemSolver::SolveLeadElement()
  
         while (x_order[next] >= 0) {
  
-            std::swap(X[i], X[x_order[next]]);
+            //std::swap(X[i], X[x_order[next]]);
+            double tmp = X[i];
+            X[i] = X[x_order[next]];
+            X[x_order[next]] = tmp;
+
             int temp = x_order[next];
  
             x_order[next] -= n;
