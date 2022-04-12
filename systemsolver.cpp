@@ -176,7 +176,7 @@ void SystemSolver::SolveLeadElement()
             {
                 if (fabs(A[z][t]) > max)
                 {
-                    max = abs(A[z][t]);
+                    max = fabs(A[z][t]);
                     max_i = z;
                     max_j = t;
                 }
